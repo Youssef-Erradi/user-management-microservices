@@ -33,7 +33,7 @@ public class AxonConfig {
 
 	@Bean
 	public MongoClient mongoClient() {
-		ConnectionString connectionString = new ConnectionString(String.format("mongodb://?:?", host, port));
+		ConnectionString connectionString = new ConnectionString("mongodb://"+host+":"+port);
 		MongoClientSettings clientSettings = MongoClientSettings.builder().applyConnectionString(connectionString).build();
 		MongoFactory mongoFactory = new MongoFactory();
 		mongoFactory.setMongoClientSettings(clientSettings);
@@ -41,16 +41,16 @@ public class AxonConfig {
 	}
 	
 	@Bean
-	public MongoTemplate mongoTemplate() {
+	public MongoTemplate template() {
 		return DefaultMongoTemplate.builder()
 				.mongoDatabase(mongoClient(), database)
 				.build();
 	}
 	
 	@Bean
-	public TokenStore tokenStore(Serializer serializer) {
+	public TokenStore store(Serializer serializer) {
 		return MongoTokenStore.builder()
-				.mongoTemplate(mongoTemplate())
+				.mongoTemplate(template())
 				.serializer(serializer)
 				.build();
 	}
