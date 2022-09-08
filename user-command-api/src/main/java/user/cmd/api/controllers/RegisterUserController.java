@@ -1,7 +1,5 @@
 package user.cmd.api.controllers;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 import javax.validation.Valid;
@@ -9,7 +7,6 @@ import javax.validation.Valid;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,15 +23,7 @@ public class RegisterUserController {
 	private final CommandGateway gateway;
 	
 	@PostMapping
-	public ResponseEntity<?> register(@Valid @RequestBody RegisterUserCommand command, BindingResult bindingResult){
-		if(bindingResult.hasErrors()) {
-			Map<String, String> errors = new HashMap<>();
-			bindingResult.getFieldErrors().forEach((error) ->{
-				errors.put(error.getField(), error.getDefaultMessage());
-			});
-			return ResponseEntity.badRequest().body(errors);
-		}
-		
+	public ResponseEntity<?> register(@Valid @RequestBody RegisterUserCommand command){
 		try {
 			command.setId(UUID.randomUUID().toString());
 			gateway.sendAndWait(command);
