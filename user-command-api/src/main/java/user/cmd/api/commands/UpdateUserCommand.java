@@ -1,5 +1,8 @@
 package user.cmd.api.commands;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
 import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
 import lombok.Builder;
@@ -10,6 +13,8 @@ import user.core.models.User;
 public class UpdateUserCommand {
 	@TargetAggregateIdentifier
 	private String id;
+	
+	@NotNull @Valid
 	private User user;
 
 }
