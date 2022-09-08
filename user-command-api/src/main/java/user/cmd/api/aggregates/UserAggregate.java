@@ -10,6 +10,7 @@ import org.axonframework.spring.stereotype.Aggregate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import lombok.NoArgsConstructor;
 import user.cmd.api.commands.RegisterUserCommand;
 import user.cmd.api.commands.RemoveUserCommand;
 import user.cmd.api.commands.UpdateUserCommand;
@@ -19,6 +20,7 @@ import user.core.events.UserUpdatedEvent;
 import user.core.models.User;
 
 @Aggregate
+@NoArgsConstructor
 public class UserAggregate {
 	@AggregateIdentifier
 	private String id;
@@ -75,6 +77,7 @@ public class UserAggregate {
 	
 	@EventSourcingHandler
  	public void on(UserUpdatedEvent event) {
+		id = event.getId();
 		user = event.getUser();
 	}
 	
