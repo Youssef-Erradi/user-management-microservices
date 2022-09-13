@@ -1,11 +1,10 @@
 package user.query.api.handlers;
 
-import java.util.List;
-
 import org.axonframework.queryhandling.QueryHandler;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
+import user.core.models.User;
 import user.query.api.dto.UserLookupResponse;
 import user.query.api.queries.FindAllUsersQuery;
 import user.query.api.queries.GetUserByIdQuery;
@@ -21,8 +20,8 @@ public class UserQueryHandlerImpl implements UserQueryHandler {
 	@Override
 	public UserLookupResponse getUserById(GetUserByIdQuery query) {
 		var optional = userRepository.findById(query.getId());
-		if (optional.isEmpty()) return null;
-		return new UserLookupResponse( List.of(optional.get()) );
+		User user = optional.isPresent() ? optional.get() : null;
+		return new UserLookupResponse( user );
 	}
 
 	@QueryHandler
