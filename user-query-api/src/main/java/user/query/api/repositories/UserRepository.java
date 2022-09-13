@@ -10,10 +10,10 @@ import user.core.models.User;
 public interface UserRepository extends MongoRepository<User, String> {
 	@Query("""
 			{ '$or' : [
-				{ 'firstname' : { $regex : ?0, $options : '1' } },
-				{ 'lastname' : { $regex : ?0, $options : '1' } },
-				{ 'email' : { $regex : ?0, $options : '1' } },
-				{ 'account.username' : { $regex : ?0, $options : '1' }}
+				{ 'firstname' : { $regex : ?0, $options : 'i' } },
+				{ 'lastname' : { $regex : ?0, $options : 'i' } },
+				{ 'email' : { $regex : ?0, $options : 'i' } },
+				{ 'account.username' : { $regex : ?0, $options : 'i' }}
 			]}
 			""")
 	List<User> searchByFilter(String filter);
