@@ -16,6 +16,8 @@ import org.springframework.context.annotation.Configuration;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.security.NullPermission;
 
 @Configuration
 public class AxonConfig {
@@ -69,5 +71,18 @@ public class AxonConfig {
 				.messageMonitor(configuration.messageMonitor(EventStore.class, "eventStore"))
 				.build();
 	}
+	
+	@Bean
+	public XStream xStream() {
+		XStream xstream = new XStream();
+		xstream.allowTypesByWildcard(new String[] { 
+		        "user.core.**",
+		        "user.query.api.**",
+		        "user.cmd.api.**"
+		        });
+		xstream.addPermission(NullPermission.NULL);
+		return xstream;
+	}
+	
 
 }
