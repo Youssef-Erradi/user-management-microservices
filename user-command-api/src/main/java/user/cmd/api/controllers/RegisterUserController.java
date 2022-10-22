@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,7 @@ public class RegisterUserController {
 	private final CommandGateway gateway;
 	
 	@PostMapping
+	@PreAuthorize("hasAuthority('WRITE')")
 	public ResponseEntity<?> register(@Valid @RequestBody RegisterUserCommand command){
 		try {
 			command.setId(UUID.randomUUID().toString());
